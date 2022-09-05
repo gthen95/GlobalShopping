@@ -1,4 +1,5 @@
 ﻿using GlobalShopping.Data.Entities;
+using GlobalShopping.Models;
 using Microsoft.AspNetCore.Identity;
 
 namespace GlobalShopping.Helpers
@@ -14,6 +15,11 @@ namespace GlobalShopping.Helpers
         Task AddUserToRoleAsync(User user, string roleName);
 
         Task<bool> IsUserInRoleAsync(User user, string roleName);
+
+        Task<SignInResult> LoginAsync(LoginViewModel model);
+
+        Task LogoutAsync();
+
 
     }
 }

@@ -1,11 +1,13 @@
 ﻿using GlobalShopping.Data;
 using GlobalShopping.Data.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace GlobalShopping.Controllers
 {
-    public class CategoriesController: Controller
+    [Authorize(Roles ="Admin")]
+    public class CategoriesController : Controller
     {
         private readonly DataContext _context;
 

@@ -1,11 +1,13 @@
 ﻿using GlobalShopping.Data;
 using GlobalShopping.Data.Entities;
 using GlobalShopping.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace GlobalShopping.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class CountriesController : Controller
     {
         private readonly DataContext _context;
