@@ -1,4 +1,7 @@
 using GlobalShopping.Data;
+using GlobalShopping.Data.Entities;
+using GlobalShopping.Helpers;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,7 +13,40 @@ builder.Services.AddDbContext<DataContext>(o =>
     o.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
+//TODO: Make strongest password
+builder.Services.AddIdentity<User, IdentityRole>(cfg =>
+{
+    cfg.User.RequireUniqueEmail = true;
+    cfg.Password.RequireDigit = false;
+    cfg.Password.RequiredUniqueChars = 0;
+    cfg.Password.RequireLowercase = false;
+    cfg.Password.RequireNonAlphanumeric = false;
+    cfg.Password.RequireUppercase = false;
+}).AddEntityFrameworkStores<DataContext>();
+
+
+//builder.Services.AddTransient<SeedDb>();// se usara una sola vez y destruye cuando ya no lo necesita
+//builder.Services.AddScoped<SeedDb>();// inyecta cada vez que la necesita y destruye cuando ya no lo necesita
+//builder.Services.AddTransient<SeedDb>();// se inyecta una vez y lo deja en memoria, no se destruye
+
+builder.Services.AddTransient<SeedDb>();
+builder.Services.AddScoped<IUserHelper, UserHelper>();
+
 var app = builder.Build();
+SeedData();
+
+//inyeccion a mano del SeedDB
+void SeedData()
+{
+    IServiceScopeFactory? scopedFactory = app.Services.GetService<IServiceScopeFactory>();
+
+    using (IServiceScope? scope = scopedFactory.CreateScope())
+    {
+        SeedDb? service = scope.ServiceProvider.GetService<SeedDb>();
+        service.SeedAsync().Wait();
+    }
+}
+
 
 if (!app.Environment.IsDevelopment())
 {
@@ -23,6 +59,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(

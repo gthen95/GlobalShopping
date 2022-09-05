@@ -42,7 +42,7 @@ namespace GlobalShopping.Controllers
             }
 
             return View(country);
-        } 
+        }
         #endregion
 
         #region Details State
@@ -124,7 +124,7 @@ namespace GlobalShopping.Controllers
                 }
             }
             return View(country);
-        } 
+        }
         #endregion
 
         #region Add State
@@ -520,7 +520,7 @@ namespace GlobalShopping.Controllers
             }
 
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Details), new {Id= state.Country.Id});
+            return RedirectToAction(nameof(Details), new { Id = state.Country.Id });
         }
         #endregion
 
