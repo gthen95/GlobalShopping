@@ -1,11 +1,12 @@
-﻿using GlobalShopping.Enums;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using System.ComponentModel.DataAnnotations;
 
-namespace GlobalShopping.Data.Entities
+namespace GlobalShopping.Models
 {
-    public class User : IdentityUser
+    public class EditUserViewModel
     {
+        public string Id { get; set; }
+
         [Display(Name = "Documento")]
         [MaxLength(20, ErrorMessage = "El campo {0} debe tener máximo {1} caractéres.")]
         [Required(ErrorMessage = "El campo {0} es obligatorio.")]
@@ -21,13 +22,15 @@ namespace GlobalShopping.Data.Entities
         [Required(ErrorMessage = "El campo {0} es obligatorio.")]
         public string LastName { get; set; }
 
-        [Display(Name = "Ciudad")]
-        public City City { get; set; }
-
         [Display(Name = "Dirección")]
         [MaxLength(200, ErrorMessage = "El campo {0} debe tener máximo {1} caractéres.")]
         [Required(ErrorMessage = "El campo {0} es obligatorio.")]
         public string Address { get; set; }
+
+        [Display(Name = "Teléfono")]
+        [MaxLength(20, ErrorMessage = "El campo {0} debe tener máximo {1} caractéres.")]
+        [Required(ErrorMessage = "El campo {0} es obligatorio.")]
+        public string PhoneNumber { get; set; }
 
         [Display(Name = "Foto")]
         public Guid ImageId { get; set; }
@@ -38,14 +41,28 @@ namespace GlobalShopping.Data.Entities
             ? $"https://localhost:7272/images/noimage.png"
             : $"https://localhost:7272/images/users/{ImageId}.png";
 
-        [Display(Name = "Tipo de usuario")]
-        public UserType UserType { get; set; }
+        [Display(Name = "Image")]
+        public IFormFile ImageFile { get; set; }
 
-        [Display(Name = "Usuario")]
-        public string FullName => $"{FirstName} {LastName}";
+        [Display(Name = "País")]
+        [Range(1, int.MaxValue, ErrorMessage = "Debes de seleccionar un país.")]
+        [Required(ErrorMessage = "El campo {0} es obligatorio.")]
+        public int CountryId { get; set; }
 
-        [Display(Name = "Usuario")]
-        public string FullNameWithDocument => $"{FirstName} {LastName} - {Document}";
+        public IEnumerable<SelectListItem> Countries { get; set; }
+
+        [Display(Name = "Provincia")]
+        [Range(1, int.MaxValue, ErrorMessage = "Debes de seleccionar una provincia.")]
+        [Required(ErrorMessage = "El campo {0} es obligatorio.")]
+        public int StateId { get; set; }
+
+        public IEnumerable<SelectListItem> States { get; set; }
+
+        [Display(Name = "Ciudad")]
+        [Range(1, int.MaxValue, ErrorMessage = "Debes de seleccionar una ciudad.")]
+        public int CityId { get; set; }
+
+        public IEnumerable<SelectListItem> Cities { get; set; }
 
     }
 }
