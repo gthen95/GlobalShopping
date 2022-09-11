@@ -13,7 +13,7 @@
 				</div>
 				<div class="col-sm-6">
 					<ol class="breadcrumb float-sm-right">
-						<a asp-action="Create" class="btn btn-outline-primary">Crear Nuevo</a>
+						<a asp-action="Create" class="btn btn-outline-primary"> <i class="fa-solid fa-plus"></i> Crear Nuevo</a>
 					</ol>
 				</div>
 			</div>
@@ -46,9 +46,9 @@
 												@Html.DisplayFor(modelItem => item.Name)
 											</td>
 											<td>
-												<a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-outline-warning"><i class='fa fa-edit'></i></a>
-												<a asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-info"><i class='fa fa-file'></i></a>
-												<a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-outline-danger"><i class='fas fa-trash'></i></a>
+												<a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-outline-warning"><i class="fa-solid fa-pen-to-square"></i></a>
+												<a asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-info"><i class="fa-solid fa-circle-info"></i></a>
+												<a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-outline-danger"><i class="fa-solid fa-trash"></i></a>
 											</td>
 										</tr>
 									}
