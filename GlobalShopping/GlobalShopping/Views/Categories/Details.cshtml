@@ -1,15 +1,35 @@
 ﻿@model GlobalShopping.Data.Entities.Category
 
 @{
-    ViewData["Title"] = "Details";
+	ViewData["Title"] = "Details";
 }
 
-<h1>Detalles</h1>
 
-<div>
-    <partial name="_CategoryDetails" />
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-outline-warning">Editar</a> 
-    <a asp-action="Index" class="btn btn-outline-success">Regresar</a>
+<div class="content-wrapper">
+	<section class="content-header">
+
+		<div class="container-fluid">
+			<div class="row mb-2">
+				<div class="col-sm-6">
+					<h1>Detalles</h1>
+				</div>
+			</div>
+		</div>
+
+		<div class="container-fluid">
+			<div class="card">
+				<div class="card-body">
+					<div class="col-12">
+						<div>
+							<partial name="_CategoryDetails" />
+						</div>
+						<div>
+							<a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-outline-warning">Editar</a>
+							<a asp-action="Index" class="btn btn-outline-success">Regresar</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
 </div>

@@ -22,7 +22,7 @@ namespace GlobalShopping.Helpers
                 .OrderBy(x => x.Text)
                 .ToListAsync();
 
-            list.Insert(0, new SelectListItem { Text = "[Seleccione una categoría...", Value = "0" });
+            list.Insert(0, new SelectListItem { Text = "[Seleccione una categoría...]", Value = "0" });
             return list;
         }
 
@@ -38,7 +38,7 @@ namespace GlobalShopping.Helpers
                .OrderBy(x => x.Text)
                .ToListAsync();
 
-            list.Insert(0, new SelectListItem { Text = "[Seleccione una ciudad...", Value = "0" });
+            list.Insert(0, new SelectListItem { Text = "[Seleccione una ciudad...]", Value = "0" });
             return list;
 
         }
@@ -53,7 +53,7 @@ namespace GlobalShopping.Helpers
                 .OrderBy(x => x.Text)
                 .ToListAsync();
 
-            list.Insert(0, new SelectListItem { Text = "[Seleccione una país...", Value = "0" });
+            list.Insert(0, new SelectListItem { Text = "[Seleccione un país...]", Value = "0" });
             return list;
         }
 
@@ -69,7 +69,7 @@ namespace GlobalShopping.Helpers
                 .OrderBy(x => x.Text)
                 .ToListAsync();
 
-            list.Insert(0, new SelectListItem { Text = "[Seleccione una provincia...", Value = "0" });
+            list.Insert(0, new SelectListItem { Text = "[Seleccione una provincia...]", Value = "0" });
             return list;
         }
     }

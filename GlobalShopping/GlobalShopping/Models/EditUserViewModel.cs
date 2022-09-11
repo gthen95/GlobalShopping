@@ -42,7 +42,7 @@ namespace GlobalShopping.Models
             : $"https://localhost:7272/images/users/{ImageId}.png";
 
         [Display(Name = "Image")]
-        public IFormFile ImageFile { get; set; }
+        public IFormFile? ImageFile { get; set; }
 
         [Display(Name = "País")]
         [Range(1, int.MaxValue, ErrorMessage = "Debes de seleccionar un país.")]

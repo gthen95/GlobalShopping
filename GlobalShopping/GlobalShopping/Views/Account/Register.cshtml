@@ -1,107 +1,154 @@
 ﻿@model GlobalShopping.Models.AddUserViewModel
 
 @{
-    ViewData["Title"] = "Register";
+	ViewData["Title"] = "Register";
+	 Layout = "_LayoutWithNothing";
 }
 
-<h2>Registrar</h2>
 
-<h4>Usuario</h4>
-<hr />
-<div class="row">
-    <div class="col-md-12">
-        <form asp-action="Register" enctype="multipart/form-data">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
-            <input type="hidden" asp-for="UserType" />
-            <input type="hidden" asp-for="Countries" />
-            <input type="hidden" asp-for="States" />
-            <input type="hidden" asp-for="Cities" />
 
-            <div class="form-group">
-                <label asp-for="Username" class="control-label"></label>
-                <input asp-for="Username" class="form-control" />
-                <span asp-validation-for="Username" class="text-danger"></span>
-            </div>
+<body class="hold-transition register-page">
+	<div style="width:900px; margin:15px;">
+		<div class="card card-outline card-primary">
+			<div class="card-header text-center">
+				<a href="../../index2.html" class="h1"><b>Global</b>Shopping</a>
+			</div>
+			<div class="card-body">
+				<p class="login-box-msg">Registrar Nuevo Usuario</p>
 
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label asp-for="Password" class="control-label"></label>
-                        <input asp-for="Password" class="form-control" />
-                        <span asp-validation-for="Password" class="text-danger"></span>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label asp-for="PasswordConfirm" class="control-label"></label>
-                        <input asp-for="PasswordConfirm" class="form-control" />
-                        <span asp-validation-for="PasswordConfirm" class="text-danger"></span>
-                    </div>
-                </div>
-            </div>    
+				<div class="text-success">
+					<h3>
+						@ViewBag.Message
+					</h3>
+				</div>
 
-            <partial name="_User" />
+				<form asp-action="Register" enctype="multipart/form-data">
+					<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+					<input type="hidden" asp-for="Id" />
+					<input type="hidden" asp-for="UserType" />
+					<input type="hidden" asp-for="Countries" />
+					<input type="hidden" asp-for="States" />
+					<input type="hidden" asp-for="Cities" />
 
-            <div class="form-group mt-2">
-                <input type="submit" value="Registrar" class="btn btn-outline-primary" />
-            </div>
-        </form>
-    </div>
-</div>
+					<div class="form-group">
+						<div class="input-group">
+							<div class="input-group-prepend">
+								<span class="input-group-text"><i class='fas fa-envelope'></i></span>
+							</div>
+							<input type="email" asp-for="Username" class="form-control" placeholder="Email">
+						</div>
+						<span asp-validation-for="Username" class="text-danger"></span>
+					</div>
+
+					<div class="row">
+						<div class="col-6">
+							<div class="form-group">
+								<div class="input-group">
+									<div class="input-group-prepend">
+										<span class="input-group-text"><i class='fas fa-lock'></i></span>
+									</div>
+									<input asp-for="Password" class="form-control" placeholder="Contraseña" />
+								</div>
+								<span asp-validation-for="Password" class="text-danger"></span>
+							</div>
+
+						</div>
+
+						<div class="col-6">
+							<div class="form-group">
+								<div class="input-group">
+									<div class="input-group-prepend">
+										<span class="input-group-text"><i class='fas fa-lock'></i></span>
+									</div>
+									<input asp-for="PasswordConfirm" class="form-control" placeholder="Confirmación de contraseña" />
+								</div>
+								<span asp-validation-for="PasswordConfirm" class="text-danger"></span>
+							</div>
+						</div>
+					</div>
+
+					<partial name="_User" />
+
+					<div class="row">
+						<div class="col-8">
+							<div class="icheck-primary">
+								<input type="checkbox" id="agreeTerms" name="terms" value="agree">
+								<label for="agreeTerms">
+									Estoy de acuerdo con los <a href="#">terminos</a>
+								</label>
+							</div>
+						</div>
+						<div class="col-4">
+							<input type="submit" value="Registrar" class="btn btn-primary btn-block" />
+						</div>
+					</div>
+				</form>
+				 <a asp-action="Login" >Ya tengo una cuenta</a>
+				
+			</div>
+		</div>
+	</div>
+
+</body>
+
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $("#CountryId").change(function () {
-                debugger;
-                $("#StateId").empty();
-                $("#StateId").append('<option value="0">[Selecciona una provincia...]</option>');
-                $("#CityId").empty();
-                $("#CityId").append('<option value="0">[Selecciona una ciudad...]</option>');
-                $.ajax({
-                    type: 'POST',
-                    url: '@Url.Action("GetStates")',
-                    dataType: 'json',
-                    data: { countryId: $("#CountryId").val() },
-                    success: function (states) {
-                        $.each(states, function (i, state) {
-                            $("#StateId").append('<option value="'
-                                + state.id + '">'
-                                + state.name + '</option>');
-                        });
-                    },
-                    error: function (ex) {
-                        alert('Failed to retrieve states.' + ex);
-                    }
-                });
-                return false;
-            })
+    @{
+	await Html.RenderPartialAsync("_ValidationScriptsPartial");
+}
 
-            $("#StateId").change(function () {
-                $("#CityId").empty();
-                $("#CityId").append('<option value="0">[Selecciona una ciudad...]</option>');
-                $.ajax({
-                    type: 'POST',
-                    url: '@Url.Action("GetCities")',
-                    dataType: 'json',
-                    data: { stateId: $("#StateId").val() },
-                    success: function (cities) {
-                        $.each(cities, function (i, city) {
-                            debugger;
-                            $("#CityId").append('<option value="'
-                                + city.id + '">'
-                                + city.name + '</option>');
-                        });
-                    },
-                    error: function (ex) {
-                        alert('Failed to retrieve cities.' + ex);
-                    }
-                });
-                return false;
-            })
-        });
-    </script>
+<script type="text/javascript">
+	$(document).ready(function () {
+		$("#CountryId").change(function () {
+			debugger;
+			$("#StateId").empty();
+			$("#StateId").append('<option value="0">[Selecciona una provincia...]</option>');
+			$("#CityId").empty();
+			$("#CityId").append('<option value="0">[Selecciona una ciudad...]</option>');
+			$.ajax({
+				type: 'POST',
+				url: '@Url.Action("GetStates")',
+				dataType: 'json',
+				data: { countryId: $("#CountryId").val() },
+				success: function (states) {
+					$.each(states, function (i, state) {
+						$("#StateId").append('<option value="'
+							+ state.id + '">'
+							+ state.name + '</option>');
+					});
+				},
+				error: function (ex) {
+					alert('Failed to retrieve states.' + ex);
+				}
+			});
+			return false;
+		})
+
+		$("#StateId").change(function () {
+			$("#CityId").empty();
+			$("#CityId").append('<option value="0">[Selecciona una ciudad...]</option>');
+			$.ajax({
+				type: 'POST',
+				url: '@Url.Action("GetCities")',
+				dataType: 'json',
+				data: { stateId: $("#StateId").val() },
+				success: function (cities) {
+					$.each(cities, function (i, city) {
+						debugger;
+						$("#CityId").append('<option value="'
+							+ city.id + '">'
+							+ city.name + '</option>');
+					});
+				},
+				error: function (ex) {
+					alert('Failed to retrieve cities.' + ex);
+				}
+			});
+			return false;
+		})
+	});
+
+</script>
+
 }
 

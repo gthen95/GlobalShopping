@@ -1,87 +1,153 @@
 ﻿@model GlobalShopping.Models.EditUserViewModel
 @{
-    ViewData["Title"] = "Edit";
+	ViewData["Title"] = "Edit";
 }
 
-<h2>Editar</h2>
 
-<h4>Usuario</h4>
-<hr />
-<div class="row">
-    <div class="col-md-8">
-        <form asp-action="ChangeUser" enctype="multipart/form-data">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
-            <input type="hidden" asp-for="ImageId" />
-            <input type="hidden" asp-for="Countries" />
-            <input type="hidden" asp-for="States" />
-            <input type="hidden" asp-for="Cities" />
+<div class="content-wrapper">
+	<section class="content-header">
+		<div class="container-fluid">
+			<div class="row mb-2">
+				<div class="col-sm-6">
+					<h1>Editar</h1>
+				</div>
+			</div>
+		</div>
+	</section>
 
-            <partial name="_User" />
+	<section class="content" style="align-items:center; margin:20px">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-md-9">
+					<form asp-action="ChangeUser" enctype="multipart/form-data">
+						<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+						<input type="hidden" asp-for="Id" />
+						<input type="hidden" asp-for="ImageId" />
+						<input type="hidden" asp-for="Countries" />
+						<input type="hidden" asp-for="States" />
+						<input type="hidden" asp-for="Cities" />
 
-            <div class="form-group mt-2">
-                <input type="submit" value="Guardar" class="btn btn-outline-primary" />
-                <a asp-action="ChangePassword" class="btn btn-outline-secondary">Cambiar Contraseña</a>
-                <a asp-action="Index" asp-controller="Home" class="btn btn-outline-success">Regresar</a>
-            </div>
-        </form>
-    </div>
-    <div class="col-md-4">
-        <img src="@Model.ImageFullPath" style="width:200px;height:200px;border-radius:50%" />
-    </div>
+						<partial name="_User" />
+
+						<div class="form-group mt-2">
+							<input type="submit" value="Guardar" class="btn btn-outline-primary" />
+							<a asp-action="ChangePassword" class="btn btn-outline-secondary">Cambiar Contraseña</a>
+							<a asp-action="Index" asp-controller="Home" class="btn btn-outline-success">Regresar</a>
+						</div>
+					</form>
+				</div>
+				<div class="col-md-3">
+					<img src="@Model.ImageFullPath" style="width:200px;height:200px;border-radius:50%" />
+				</div>
+
+			</div>
+
+		</div>
+	</section>
+
+
+
+
+
+	@*<section class="content">
+		<div class="container-fluid">
+		<div class="row">
+		<div class="col-md-12">
+		<div class="card card-primary">
+		<div class="card-header">
+		<h3 class="card-title">Usuario</h3>
+		</div>
+
+		<div class="col-md-6">
+		<form asp-action="ChangeUser" enctype="multipart/form-data">
+		<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+		<input type="hidden" asp-for="Id" />
+		<input type="hidden" asp-for="ImageId" />
+		<input type="hidden" asp-for="Countries" />
+		<input type="hidden" asp-for="States" />
+		<input type="hidden" asp-for="Cities" />
+
+		<div class="card-body">
+
+		<div class="form-group">
+		<partial name="_User" />
+		</div>
+
+		</div>
+
+		<div class="card-footer">
+		<input type="submit" value="Guardar" class="btn btn-outline-primary" />
+		<a asp-action="ChangePassword" class="btn btn-outline-secondary">Cambiar Contraseña</a>
+		<a asp-action="Index" asp-controller="Home" class="btn btn-outline-success">Regresar</a>
+		</div>
+		</form>
+
+		</div>
+		<div class="col-md-6 left">
+		<img src="@Model.ImageFullPath" style="width:200px;height:200px;border-radius:50%" />
+		</div>
+		</div>
+		</div>
+		</div>
+		</div>
+		</section>*@
+
 </div>
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $("#CountryId").change(function () {
-                debugger;
-                $("#StateId").empty();
-                $("#StateId").append('<option value="0">[Selecciona una provincia...]</option>');
-                $("#CityId").empty();
-                $("#CityId").append('<option value="0">[Selecciona una ciudad...]</option>');
-                $.ajax({
-                    type: 'POST',
-                    url: '@Url.Action("GetStates")',
-                    dataType: 'json',
-                    data: { countryId: $("#CountryId").val() },
-                    success: function (states) {
-                        $.each(states, function (i, state) {
-                            $("#StateId").append('<option value="'
-                                + state.id + '">'
-                                + state.name + '</option>');
-                        });
-                    },
-                    error: function (ex) {
-                        alert('Failed to retrieve states.' + ex);
-                    }
-                });
-                return false;
-            })
 
-            $("#StateId").change(function () {
-                $("#CityId").empty();
-                $("#CityId").append('<option value="0">[Selecciona una ciudad...]</option>');
-                $.ajax({
-                    type: 'POST',
-                    url: '@Url.Action("GetCities")',
-                    dataType: 'json',
-                    data: { stateId: $("#StateId").val() },
-                    success: function (cities) {
-                        $.each(cities, function (i, city) {
-                            debugger;
-                            $("#CityId").append('<option value="'
-                                + city.id + '">'
-                                + city.name + '</option>');
-                        });
-                    },
-                    error: function (ex) {
-                        alert('Failed to retrieve cities.' + ex);
-                    }
-                });
-                return false;
-            })
-        });
-    </script>
+@section Scripts {
+    @{
+	await Html.RenderPartialAsync("_ValidationScriptsPartial");
+}
+<script type="text/javascript">
+	$(document).ready(function () {
+		$("#CountryId").change(function () {
+			debugger;
+			$("#StateId").empty();
+			$("#StateId").append('<option value="0">[Selecciona una provincia...]</option>');
+			$("#CityId").empty();
+			$("#CityId").append('<option value="0">[Selecciona una ciudad...]</option>');
+			$.ajax({
+				type: 'POST',
+				url: '@Url.Action("GetStates")',
+				dataType: 'json',
+				data: { countryId: $("#CountryId").val() },
+				success: function (states) {
+					$.each(states, function (i, state) {
+						$("#StateId").append('<option value="'
+							+ state.id + '">'
+							+ state.name + '</option>');
+					});
+				},
+				error: function (ex) {
+					alert('Failed to retrieve states.' + ex);
+				}
+			});
+			return false;
+		})
+
+		$("#StateId").change(function () {
+			$("#CityId").empty();
+			$("#CityId").append('<option value="0">[Selecciona una ciudad...]</option>');
+			$.ajax({
+				type: 'POST',
+				url: '@Url.Action("GetCities")',
+				dataType: 'json',
+				data: { stateId: $("#StateId").val() },
+				success: function (cities) {
+					$.each(cities, function (i, city) {
+						debugger;
+						$("#CityId").append('<option value="'
+							+ city.id + '">'
+							+ city.name + '</option>');
+					});
+				},
+				error: function (ex) {
+					alert('Failed to retrieve cities.' + ex);
+				}
+			});
+			return false;
+		})
+	});
+</script>
 }
