@@ -1,0 +1,52 @@
+﻿
+@model GlobalShopping.Models.EditProductViewModel
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="form-group">
+			<label asp-for="Name" class="control-label"></label>
+			<div class="input-group">
+				<div class="input-group-prepend">
+					<span class="input-group-text"><i class='fa fa-address-card'></i></span>
+				</div>
+				
+				<input asp-for="Name" class="form-control" placeholder="Nombre" />
+			</div>
+			<span asp-validation-for="Name" class="text-danger"></span>
+		</div>
+
+        <div class="form-group">
+			<label asp-for="Description" class="control-label"></label>
+			<div class="input-group">
+				<div class="input-group-prepend">
+					<span class="input-group-text"><i class='fa fa-address-card'></i></span>
+				</div>
+				<input asp-for="Description" class="form-control" placeholder="Descripción" />
+			</div>
+			<span asp-validation-for="Description" class="text-danger"></span>
+		</div>
+    </div>
+    <div class="col-md-6">
+        <div class="form-group">
+			<label asp-for="Price" class="control-label"></label>
+			<div class="input-group">
+				<div class="input-group-prepend">
+					<span class="input-group-text"><i class='fa fa-address-card'></i></span>
+				</div>
+				<input asp-for="Price" class="form-control" placeholder="Precio" />
+			</div>
+			<span asp-validation-for="Price" class="text-danger"></span>
+		</div>
+
+		<div class="form-group">
+			<label asp-for="Stock" class="control-label"></label>
+			<div class="input-group">
+				<div class="input-group-prepend">
+					<span class="input-group-text"><i class='fa fa-address-card'></i></span>
+				</div>
+				<input asp-for="Stock" class="form-control" placeholder="Inventario" />
+			</div>
+			<span asp-validation-for="Stock" class="text-danger"></span>
+		</div>
+    </div>
+</div>

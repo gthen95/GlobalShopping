@@ -26,10 +26,7 @@ namespace GlobalShopping.Helpers
                 if (File.Exists(Path))
                     File.Delete(Path);
             }
-            catch (Exception)
-            {
-                throw;
-            }
+            catch { }
         }
 
         public async Task<Guid> UploadBlobAsync(IFormFile file, string containerName)

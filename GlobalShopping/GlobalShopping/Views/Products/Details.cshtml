@@ -1,0 +1,148 @@
+﻿
+@model GlobalShopping.Data.Entities.Product
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+
+
+<div class="content-wrapper">
+	<section class="content-header">
+		<div class="container-fluid">
+			<div class="card">
+				<div class="card-body">
+					<div class="col-12">
+						<div>
+							<h4>Detalles del Producto</h4>
+							<hr />
+							<partial name="_ProductDetails" />
+						</div>
+						<div>
+							<a asp-action="AddImage" asp-route-id="@Model?.Id" class="btn btn-outline-primary"><i class="fa-solid fa-plus"></i> Adicionar Imagen</a>
+							<a asp-action="AddCategory" asp-route-id="@Model?.Id" class="btn btn-outline-secondary"><i class="fa-solid fa-plus"></i> Adicionar Categoría</a>
+							<a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-outline-warning"><i class="fa-solid fa-pen-to-square"></i> Editar Producto</a>
+							<a asp-action="Index" class="btn btn-outline-success"><i class="fa-solid fa-rotate-left"></i> Regresar</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-6">
+
+					<div class="card">
+
+						<div class="card-body">
+							<table id="ImagesTable" class="table table-bordered table-striped">
+								<thead>
+									<tr>
+                                        <th>
+                                            @Html.DisplayNameFor(model => model.ProductImages.FirstOrDefault().ImageFullPath)
+                                        </th>
+                                        <th></th>
+                                    </tr>
+								</thead>
+								<tbody>
+									@foreach (var item in Model.ProductImages)
+                                    {
+                                        <tr>
+                                            <td>
+                                                <img src="@item.ImageFullPath" style="width:150px;" />
+                                            </td>
+                                            <td>
+                                                <a asp-action="DeleteImage" asp-route-id="@item.Id" class="btn btn-outline-danger"><i class="fa-solid fa-trash"></i></a>
+                                            </td>
+                                        </tr>
+                                    }
+								</tbody>
+								<tfoot>
+									<tr>
+                                        <th>
+                                            @Html.DisplayNameFor(model => model.ProductImages.FirstOrDefault().ImageFullPath)
+                                        </th>
+                                        <th></th>
+                                    </tr>
+								</tfoot>
+							</table>
+						</div>
+					</div>
+				</div>
+
+                <div class="col-6">
+
+					<div class="card">
+
+						<div class="card-body">
+							<table id="CategoriesTable" class="table table-bordered table-striped">
+								<thead>
+									<tr>
+										<th>
+                                            @Html.DisplayNameFor(model => model.ProductCategories.FirstOrDefault().Category.Name)
+                                        </th>
+                                        <th></th>
+									</tr>
+								</thead>
+								<tbody>
+									@foreach (var item in Model.ProductCategories)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Category.Name)
+                                            </td>
+                                            <td>
+                                                <a asp-action="DeleteCategory" asp-route-id="@item.Id" class="btn btn-outline-danger"><i class="fa-solid fa-trash"></i></a>
+                                            </td>
+                                        </tr>
+                                    }
+								</tbody>
+								<tfoot>
+									<tr>
+										<th>
+                                            @Html.DisplayNameFor(model => model.ProductCategories.FirstOrDefault().Category.Name)
+                                        </th>
+                                        <th></th>
+									</tr>
+								</tfoot>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</section>
+</div>
+
+@section Scripts {
+    @{
+	await Html.RenderPartialAsync("_ValidationScriptsPartial");
+}
+
+<script type="text/javascript">
+	$(document).ready(function () {
+		$('#ImagesTable').DataTable({
+			"language": {
+				"url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
+			},
+			"aLengthMenu": [
+				[2, 5, 10, 15, -1],
+				[2, 5, 10, 15, "Todos"]
+			],
+			 "buttons": ["copy",  "excel", "pdf", "print", "colvis"]
+		}).buttons().container().appendTo('#MyTable_wrapper .col-md-6:eq(0)');
+        $('#CategoriesTable').DataTable({
+			"language": {
+				"url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
+			},
+			"aLengthMenu": [
+				[2, 5, 10, 15, -1],
+				[2, 5, 10, 15, "Todos"]
+			],
+			 "buttons": ["copy",  "excel", "pdf", "print", "colvis"]
+		}).buttons().container().appendTo('#MyTable_wrapper .col-md-6:eq(0)');
+	});
+</script>
+}

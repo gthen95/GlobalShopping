@@ -1,0 +1,63 @@
+﻿@model GlobalShopping.Models.AddCategoryProductViewModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+
+<div class="content-wrapper">
+	<section class="content-header">
+		<div class="container-fluid">
+			<div class="row mb-2">
+				<div class="col-sm-6">
+					<h1>Crear</h1>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section class="content">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="card card-primary">
+						<div class="card-header">
+							<h3 class="card-title">Categoría / Producto</h3>
+						</div>
+
+						<form asp-action="AddCategory" enctype="multipart/form-data">
+							<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+							<input type="hidden" asp-for="ProductId" />
+							<input type="hidden" asp-for="Categories" />
+
+							<div class="card-body">
+								<div class="form-group">
+									<label asp-for="CategoryId" class="control-label"></label>
+									<div class="input-group">
+										<div class="input-group-prepend">
+											<span class="input-group-text"><i class="fa-solid fa-cart-flatbed"></i></span>
+										</div>
+										<select asp-for="CategoryId" asp-items="Model.Categories" class="form-control"></select>
+									</div>
+									<span asp-validation-for="CategoryId" class="text-danger"></span>
+								</div>
+							</div>
+
+							<div class="card-footer">
+								<input type="submit" value="Crear" class="btn btn-outline-primary" />
+								<a asp-action="Details" asp-route-id="@Model.ProductId" class="btn btn-outline-success"><i class="fa-solid fa-rotate-left"></i> Regresar</a>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+</div>
+
+@section Scripts {
+	@{
+	await Html.RenderPartialAsync("_ValidationScriptsPartial");
+}
+	}
