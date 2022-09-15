@@ -33276,11 +33276,11 @@ a.close.disabled, a.disabled.mailbox-attachment-close {
 }
 
 .small-box {
-  border-radius: 0.25rem;
-  box-shadow: 0 0 1px rgba(0, 0, 0, 0.125), 0 1px 3px rgba(0, 0, 0, 0.2);
-  display: block;
-  margin-bottom: 20px;
-  position: relative;
+    border-radius: 0.25rem;
+    box-shadow: 2px 2px 8px 4px #d3d3d3d1;
+    display: block;
+    margin-bottom: 20px;
+    position: relative;
 }
 
 .small-box > .inner {
