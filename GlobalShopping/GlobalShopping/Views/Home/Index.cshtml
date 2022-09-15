@@ -1,16 +1,21 @@
-﻿@model IEnumerable<GlobalShopping.Models.ProductsHomeViewModel>
+﻿@model GlobalShopping.Models.HomeViewModel
 
 @{
 	ViewData["Title"] = "Index";
 }
 
-
 <div class="content-wrapper">
 
 	<section class="content">
 		<div class="container-fluid">
-			<br />
-			@foreach (var item in Model)
+			
+			@if(Model.Quantity > 0)
+			{
+				<a asp-action="ShowCart" style="margin:10px" class="btn btn-outline-primary"><i class="fa-solid fa-cart-shopping"></i> Ver Carro de Compras (@Model.Quantity)</a>
+			
+			}
+			<br/>
+			@foreach (var item in Model.Products)
 			{
 
 
