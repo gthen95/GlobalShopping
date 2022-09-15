@@ -5,16 +5,16 @@
 }
 
 <style type="text/css">
-    .card {
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        border: 1px solid lightgray;
-        box-shadow: 2px 2px 8px 4px #d3d3d3d1;
-        border-radius: 15px;
-        font-family: sans-serif;
-        margin: 5px;
-    }
+	.card {
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+		border: 1px solid lightgray;
+		box-shadow: 2px 2px 8px 4px #d3d3d3d1;
+		border-radius: 15px;
+		font-family: sans-serif;
+		margin: 5px;
+	}
 </style>
 
 
@@ -22,13 +22,13 @@
 
 	<section class="content">
 		<div class="container-fluid">
-			
-			@if(Model.Quantity > 0)
+
+			@if (Model.Quantity > 0)
 			{
 				<a asp-action="ShowCart" style="margin:10px" class="btn btn-outline-primary"><i class="fa-solid fa-cart-shopping"></i> Ver Carro de Compras (@Model.Quantity)</a>
 			}
-			<br/>
-			
+			<br />
+
 			<div class="row">
 				@if (Model.Products.Count() > 0)
 				{
@@ -40,20 +40,20 @@
 								<div class="card-header text-muted border-bottom-0">
 									<h2 class="lead"><b>@item.Name</b></h2>
 								</div>
-								
+
 								<div class="card-body">
-								  <div class="row">
-									<div class="col-7">
-										 <p class="text-muted text-md"><b>Descripción: </b> @item.Description </p>
-										 <ul class="ml-4 mb-0 fa-ul text-muted">
-											<li class="medium"><span class="fa-li"><i class="fa-solid fa-coins"></i></span> <b>Precio: </b> @Html.DisplayFor(modelItem => item.Price)</li>
-											<li class="medium"><span class="fa-li"><i class="fa-solid fa-box"></i></span> <b>Inventario: </b> @Html.DisplayFor(modelItem => item.Stock)</li>
-										 </ul>
+									<div class="row">
+										<div class="col-7">
+											<p class="text-muted text-md"><b>Descripción: </b> @item.Description </p>
+											<ul class="ml-4 mb-0 fa-ul text-muted">
+												<li class="medium"><span class="fa-li"><i class="fa-solid fa-coins"></i></span> <b>Precio: </b> @Html.DisplayFor(modelItem => item.Price)</li>
+												<li class="medium"><span class="fa-li"><i class="fa-solid fa-box"></i></span> <b>Inventario: </b> @Html.DisplayFor(modelItem => item.Stock)</li>
+											</ul>
+										</div>
+										<div class="col-5 text-center zoom">
+											<img src="@item.ImageFullPath" style="height:150px; max-width:280px;" />
+										</div>
 									</div>
-									<div class="col-5 text-center zoom">
-										<img src="@item.ImageFullPath" style="height:150px; max-width:280px;" />
-									</div>
-								  </div>
 								</div>
 
 								<div class="card-footer">
@@ -66,10 +66,10 @@
 										</a>
 									</div>
 								</div>
-						
+
 							</div>
 						</div>
-	
+
 					}
 				}
 				else
@@ -78,7 +78,7 @@
 				}
 
 			</div>
-			
+
 		</div>
 	</section>
 </div>
