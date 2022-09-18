@@ -1,0 +1,147 @@
+﻿@model GlobalShopping.Models.AddProductToCartViewModel
+
+@{
+	ViewData["Title"] = "Details";
+	
+}
+
+<div class="content-wrapper">
+
+	<section class="content">
+
+		<div class="card card-solid">
+			<div class="card-body">
+				<div class="row">
+					<div class="col-12 col-sm-6">
+						<h3 class="d-inline-block d-sm-none">@Model?.Name</h3>
+						<div id="ImagesCarousel" class="carousel slide" data-ride="carousel">
+							<div class="carousel-inner">
+								@{
+									var first = true;
+								}
+								@foreach (var item in @Model?.ProductImages)
+								{
+									<div class="carousel-item @(first?Html.Raw("active"):Html.Raw(""))">
+										<img class="product-image" style="width:500px !important; align-content:center !important" src="@item.ImageFullPath" alt="@item.Id">
+									</div>
+									first = false;
+								}
+							</div>
+							<a id="ImagesCarouselPrev" class="carousel-control-prev" href="#ImagesCarousel" role="button"
+							   data-slide="prev">
+								<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+								<span class="sr-only btn btn-primary">Anterior</span>
+							</a>
+							<a id="ImagesCarouselNext" class="carousel-control-next" href="#ImagesCarousel" role="button"
+							   data-slide="next">
+								<span class="carousel-control-next-icon" aria-hidden="true"></span>
+								<span class="sr-only btn-primary btn">Siguiente</span>
+							</a>
+						</div>
+						<div class="col-12 product-image-thumbs">
+
+							@foreach (var item in @Model?.ProductImages)
+							{
+								<div class="product-image-thumb active">
+									<img src="@item.ImageFullPath" alt="@item.Id">
+								</div>
+							}
+						</div>
+
+					</div>
+
+					<div class="col-12 col-sm-6">
+						<h3 class="my-3">@Model?.Name</h3>
+						<p>@Html.DisplayFor(model => model.Description)</p>
+
+						<hr>
+
+
+						<div class="bg-gray py-2 px-3 mt-4">
+							<h2 class="mb-0">
+								@Html.DisplayFor(model => model.Price)
+							</h2>
+							<h4 class="mt-0">
+								<small>@Html.DisplayNameFor(model => model.Stock): @Html.DisplayFor(model => model.Stock) </small>
+							</h4>
+							<h4 class="mt-0">
+								<small>@Html.DisplayNameFor(model => model.Categories): @Html.DisplayFor(model => model.Categories) </small>
+							</h4>
+						</div>
+
+						<hr>
+						<div class="col-md-12">
+							<form asp-action="Details">
+								<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+								<input type="hidden" asp-for="Id" />
+								<div class="form-group">
+									<label asp-for="Remarks" class="control-label"></label>
+									<input asp-for="Remarks" class="form-control" />
+									<span asp-validation-for="Remarks" class="text-danger"></span>
+								</div>
+								<div class="form-group">
+									<label asp-for="Quantity" class="control-label"></label>
+									<input asp-for="Quantity" class="form-control" />
+									<span asp-validation-for="Quantity" class="text-danger"></span>
+								</div>
+								<div class="form-group mt-2">
+									<input type="submit" value="Agregar al Carro de Compras" class="btn btn-outline-primary" />
+									<a asp-action="Index" class="btn btn-outline-success">Regresar</a>
+								</div>
+							</form>
+						</div>
+
+
+						<div class="mt-4 product-share">
+							<a href="#" class="text-gray">
+								<i class="fab fa-facebook-square fa-2x"></i>
+							</a>
+							<a href="#" class="text-gray">
+								<i class="fab fa-twitter-square fa-2x"></i>
+							</a>
+							<a href="#" class="text-gray">
+								<i class="fas fa-envelope-square fa-2x"></i>
+							</a>
+							<a href="#" class="text-gray">
+								<i class="fas fa-rss-square fa-2x"></i>
+							</a>
+						</div>
+
+					</div>
+				</div>
+
+			</div>
+			<!-- /.card-body -->
+		</div>
+		<!-- /.card -->
+
+	</section>
+	<!-- /.content -->
+</div>
+
+
+@section Scripts {
+    @{
+    await Html.RenderPartialAsync("_ValidationScriptsPartial");
+}
+<script type="text/javascript">
+	  $(document).ready(function () {
+		  $("#ImagesCarousel").carousel();
+		  $("#ImagesCarouselPrev").click(function(){
+			  $("#ImagesCarousel").carousel("prev");
+		  });
+		  $("#ImagesCarouselNext").click(function(){
+			  $("#ImagesCarousel").carousel("next");
+		  });
+	  });
+
+	  $(document).ready(function() {
+	  $('.product-image-thumb').on('click', function () {
+		var $image_element = $(this).find('img')
+		$('.product-image').prop('src', $image_element.attr('src'))
+		$('.product-image-thumb.active').removeClass('active')
+		$(this).addClass('active')
+	  })
+	})
+</script>
+}

@@ -13,3 +13,22 @@
         -webkit-transform: scale(2) !important; /* Safari 3-8 */
         transform: scale(2) !important;
     }
+
+
+.carousel-inner {
+    width: auto;
+    height: 500px;
+    max-height: 500px !important;
+    border: 1px solid lightgray;
+    box-shadow: 2px 2px 8px 4px #d3d3d3d1;
+    border-radius: 15px;
+    font-family: sans-serif;
+    margin: 5px;
+}
+
+.carousel-content {
+    color: black;
+    display: flex;
+    text-align: center;
+    
+}

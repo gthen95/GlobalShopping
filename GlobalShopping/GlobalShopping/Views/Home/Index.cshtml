@@ -2,6 +2,7 @@
 
 @{
 	ViewData["Title"] = "Index";
+	Layout = "_LayoutHome";
 }
 
 <style type="text/css">
@@ -23,10 +24,6 @@
 	<section class="content">
 		<div class="container-fluid">
 
-			@if (Model.Quantity > 0)
-			{
-				<a asp-action="ShowCart" style="margin:10px" class="btn btn-outline-primary"><i class="fa-solid fa-cart-shopping"></i> Ver Carro de Compras (@Model.Quantity)</a>
-			}
 			<br />
 
 			<div class="row">
