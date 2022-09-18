@@ -7,7 +7,7 @@ namespace GlobalShopping.Data.Entities
 	{
         public int Id { get; set; }
 
-        [DisplayFormat(DataFormatString = "{0:yyyy/MM/dd hh:mm tt}")]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy hh:mm tt}")]
         [Display(Name = "Fecha")]
         [Required(ErrorMessage = "El campo {0} es obligatorio.")]
         public DateTime Date { get; set; }
@@ -18,6 +18,7 @@ namespace GlobalShopping.Data.Entities
         [Display(Name = "Comentarios")]
         public string? Remarks { get; set; }
 
+        [Display(Name = "Estatus")]
         public OrderStatus OrderStatus { get; set; }
 
         public ICollection<SaleDetail> SaleDetails { get; set; }

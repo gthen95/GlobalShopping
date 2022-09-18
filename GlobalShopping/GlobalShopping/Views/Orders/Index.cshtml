@@ -1,0 +1,147 @@
+﻿@model IEnumerable<GlobalShopping.Data.Entities.Sale>
+
+@{
+	ViewData["Title"] = "Index";
+}
+
+<div class="content-wrapper">
+	<section class="content-header">
+		<div class="container-fluid">
+			<div class="row mb-2">
+				<div class="col-sm-6">
+					<h1>Pedidos</h1>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section class="content">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-12">
+
+					<div class="card">
+
+						<div class="card-body">
+							<table id="MyTable" class="table table-bordered table-striped">
+								<thead>
+									<tr>
+										<th>
+											@Html.DisplayNameFor(model => model.Date)
+										</th>
+										<th>
+											@Html.DisplayNameFor(model => model.User.FullName)
+										</th>
+										<th>
+											@Html.DisplayNameFor(model => model.Remarks)
+										</th>
+										<th>
+											@Html.DisplayNameFor(model => model.OrderStatus)
+										</th>
+										<th>
+											@Html.DisplayNameFor(model => model.Lines)
+										</th>
+										<th>
+											@Html.DisplayNameFor(model => model.Quantity)
+										</th>
+										<th>
+											@Html.DisplayNameFor(model => model.SubTotal)
+										</th>
+										<th></th>
+									</tr>
+								</thead>
+								<tbody>
+									@foreach (var item in Model)
+									{
+										<tr>
+											<td>
+												@Html.DisplayFor(modelItem => item.Date)
+											</td>
+											<td>
+												@Html.DisplayFor(modelItem => item.User.FullName)
+											</td>
+											<td>
+												@Html.DisplayFor(modelItem => item.Remarks)
+											</td>
+											<td>
+												@Html.DisplayFor(modelItem => item.OrderStatus)
+											</td>
+											<td>
+												@Html.DisplayFor(modelItem => item.Lines)
+											</td>
+											<td>
+												@Html.DisplayFor(modelItem => item.Quantity)
+											</td>
+											<td>
+												@Html.DisplayFor(modelItem => item.SubTotal)
+											</td>
+											<td>
+												<a asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-info"><i class="fa-solid fa-circle-info"></i></a>
+											</td>
+
+
+										</tr>
+									}
+								</tbody>
+								<tfoot>
+									<tr>
+										<th>
+											@Html.DisplayNameFor(model => model.Date)
+										</th>
+										<th>
+											@Html.DisplayNameFor(model => model.User.FullName)
+										</th>
+										<th>
+											@Html.DisplayNameFor(model => model.Remarks)
+										</th>
+										<th>
+											@Html.DisplayNameFor(model => model.OrderStatus)
+										</th>
+										<th>
+											@Html.DisplayNameFor(model => model.Lines)
+										</th>
+										<th>
+											@Html.DisplayNameFor(model => model.Quantity)
+										</th>
+										<th>
+											@Html.DisplayNameFor(model => model.SubTotal)
+										</th>
+										<th></th>
+									</tr>
+								</tfoot>
+							</table>
+						</div>
+
+					</div>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</section>
+</div>
+
+
+
+@section Scripts {
+    @{
+	await Html.RenderPartialAsync("_ValidationScriptsPartial");
+}
+
+<script type="text/javascript">
+	$(document).ready(function () {
+		$('#MyTable').DataTable({
+			"language": {
+				"url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
+			},
+			"aLengthMenu": [
+				[10, 25, 50, 100, -1],
+				[10, 25, 50, 100, "Todos"]
+			],
+			 "buttons": ["copy",  "excel", "pdf", "print", "colvis"]
+		}).buttons().container().appendTo('#MyTable_wrapper .col-md-6:eq(0)');
+	});
+</script>
+}

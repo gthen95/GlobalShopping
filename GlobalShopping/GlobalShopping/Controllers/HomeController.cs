@@ -185,7 +185,7 @@ namespace GlobalShopping.Controllers
                 return NotFound();
             }
 
-            List<TemporalSale>? temporalSales = await _context.TemporalSales
+            List<TemporalSale> temporalSales = await _context.TemporalSales
                 .Include(ts => ts.Product)
                 .ThenInclude(p => p.ProductImages)
                 .Where(ts => ts.User.Id == user.Id)
