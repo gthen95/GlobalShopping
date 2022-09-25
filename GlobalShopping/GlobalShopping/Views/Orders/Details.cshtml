@@ -4,17 +4,22 @@
 	ViewData["Title"] = "Details";
 }
 
+
 <div class="content-wrapper">
 	<!-- Content Header (Page header) -->
+	
 	<section class="content-header">
 		<div class="container-fluid">
 			<div class="row mb-2">
 				<div class="col-sm-6">
 					<h1>Detalle del Pedido</h1>
+					
 				</div>
 			</div>
 		</div><!-- /.container-fluid -->
+		<flash dismissable="true" />
 	</section>
+	
 
 	<section class="content">
 		<div class="container-fluid">
@@ -217,7 +222,7 @@
 								<div class="row no-print">
 
 
-									<div class="col-12">						
+									<div class="col-12">
 										<a asp-action="Dispatch" asp-route-id="@Model?.Id" class="btn btn-outline-primary"><i class="fa-solid fa-credit-card"></i> Despachar</a>
 										<a asp-action="Send" asp-route-id="@Model?.Id" class="btn btn-outline-secondary"><i class="fa-solid fa-credit-card"></i> Envíar</a>
 										<a asp-action="Confirm" asp-route-id="@Model?.Id" class="btn btn-outline-warning"><i class="fa-solid fa-credit-card"></i> Confirmar</a>
@@ -264,6 +269,7 @@
 			 "buttons": ["copy",  "excel", "pdf", "print", "colvis"]
 		}).buttons().container().appendTo('#MyTable_wrapper .col-md-6:eq(0)');
 	});
+
 </script>
 }
 

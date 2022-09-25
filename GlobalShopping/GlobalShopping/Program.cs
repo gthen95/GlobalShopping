@@ -1,8 +1,10 @@
+using AspNetCoreHero.ToastNotification;
 using GlobalShopping.Data;
 using GlobalShopping.Data.Entities;
 using GlobalShopping.Helpers;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -50,6 +52,7 @@ builder.Services.AddScoped<ICombosHelper, CombosHelper>();
 builder.Services.AddScoped<IBlobHelper, BlobHelper>();
 builder.Services.AddScoped<IMailHelper, MailHelper>();
 builder.Services.AddScoped<IOrdersHelper, OrdersHelper>();
+builder.Services.AddToastify(config => { config.DurationInSeconds = 5; config.Position = Position.Right; config.Gravity = Gravity.Top; });
 
 var app = builder.Build();
 SeedData();
