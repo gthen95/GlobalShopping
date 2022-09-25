@@ -20,11 +20,44 @@
 
 
 <div class="content-wrapper">
+	<section class="content-header">
+		<div class="container-fluid">
+			<div class="row mb-2">
+				<div class="col-sm-6">
+					<a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]">Ordenar por Nombre</a>&nbsp;&nbsp;
+					<a asp-action="Index" asp-route-sortOrder="@ViewData["PriceSortParm"]">Ordenar por Precio</a>
+				</div>
+				<div class="col-sm-6">
+					<form asp-action="Index" method="get">
+						<div class="form-actions no-color">
+							<p>
+								Buscar por nombre o categoría: <input type="text" name="SearchString" value="@ViewData["CurrentFilter"]" />
+								<input type="submit" value="Buscar" class="btn btn-warning" />
+								<a asp-action="Index" class="btn btn-success">Ver Todos</a>
+							</p>
+						</div>
+					</form>
+				</div>
+			</div>
+
+			<div class="row mb-2">
+				<div class="col-sm-1">
+					<b><h5>Categorías: </h5></b>
+				</div>
+				<div class="col-sm-11">
+					@foreach (var item in Model.Categories)
+					{
+						<span>@item.Name&nbsp;&nbsp;</span>
+					}
+				</div>
+			</div>
+		</div><!-- /.container-fluid -->
+
+	</section>
+
 
 	<section class="content">
 		<div class="container-fluid">
-
-			<br />
 
 			<div class="row">
 				@if (Model.Products.Count() > 0)
@@ -68,6 +101,38 @@
 						</div>
 
 					}
+
+					<div class="container-fluid">
+
+
+						<div class="row">
+							@{
+								var prevDisabled = !Model.Products.HasPreviousPage ? "disabled" : "";
+								var nextDisabled = !Model.Products.HasNextPage ? "disabled" : "";
+							}
+
+							<div class="col-12">
+								<a asp-action="Index"
+							   asp-route-sortOrder="@ViewData["CurrentSort"]"
+							   asp-route-pageNumber="@(Model.Products.PageIndex - 1)"
+							   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+							   class="btn btn-warning @prevDisabled">
+									Anterior
+								</a>
+								<a asp-action="Index"
+							   asp-route-sortOrder="@ViewData["CurrentSort"]"
+							   asp-route-pageNumber="@(Model.Products.PageIndex + 1)"
+							   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+							   class="btn btn-success @nextDisabled">
+									Siguiente
+								</a>
+							</div>
+
+
+						</div>
+
+					</div>
+
 				}
 				else
 				{
@@ -76,6 +141,52 @@
 
 			</div>
 
+
+
+
 		</div>
 	</section>
+
+	@*<section class="content-footer">
+		<div class="container-fluid">
+
+
+		<div class="row">
+		@{
+		var prevDisabled = !Model.Products.HasPreviousPage ? "disabled" : "";
+		var nextDisabled = !Model.Products.HasNextPage ? "disabled" : "";
+		}
+
+		<div class="col-12">
+		<a asp-action="Index"
+		asp-route-sortOrder="@ViewData["CurrentSort"]"
+		asp-route-pageNumber="@(Model.Products.PageIndex - 1)"
+		asp-route-currentFilter="@ViewData["CurrentFilter"]"
+		class="btn btn-warning @prevDisabled">
+		Anterior
+		</a>
+		<a asp-action="Index"
+		asp-route-sortOrder="@ViewData["CurrentSort"]"
+		asp-route-pageNumber="@(Model.Products.PageIndex + 1)"
+		asp-route-currentFilter="@ViewData["CurrentFilter"]"
+		class="btn btn-success @nextDisabled">
+		Siguiente
+		</a>
+		</div>
+
+
+		</div>
+
+
+
+
+		</div><!-- /.container-fluid -->
+
+		</section>*@
 </div>
+
+@section Scripts {
+	@{
+	await Html.RenderPartialAsync("_ValidationScriptsPartial");
+}
+}
