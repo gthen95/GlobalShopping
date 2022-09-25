@@ -11,7 +11,9 @@
 	<link rel="stylesheet" href="~/adminlte/plugins/font-awesome/css/all.min.css">
 	<!-- Theme style -->
 	<link rel="stylesheet" href="~/adminlte/dist/css/adminlte.min.css">
-	<link rel="stylesheet" href="~/css/site.css">
+	<link rel="stylesheet" href="~/lib/jqueryui/jquery-ui.min.css" />
+	<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+	<link rel="stylesheet" href="~/GlobalShopping.styles.css" asp-append-version="true" />
 
 	<!-- DataTables -->
 	<link rel="stylesheet" href="~/adminlte/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
@@ -24,10 +26,12 @@
 	<div class="wrapper">
 		<partial name="_NavbarHome" />
 		<partial name="_Sidebar" />
+		<partial name="_BusyIndicatorPartial" />
 		@RenderBody()
 		<partial name="_Footer" />
 	</div>
 	
+    <script src="~/lib/jquery-ui/jquery-ui.min.js"></script>
     <script src="~/adminlte/plugins/font-awesome/js/fontawesome.js"></script>
 	<script src="~/adminlte/plugins/jquery/jquery.min.js"></script>
 	<script src="~/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -44,6 +48,18 @@
 	<script src="~/adminlte/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
 	<script src="~/adminlte/plugins/datatables-buttons/js/buttons.print.min.js"></script>
 	<script src="~/adminlte/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+
+    <script>
+        function displayBusyIndicator() {
+            $('.loading').show();
+        }
+    </script>
+
+    <script>
+        $(window).on('beforeunload', function () {
+            displayBusyIndicator();
+        });
+    </script>
 	
 	
 	@await Component.InvokeAsync("Toastify");
