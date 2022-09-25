@@ -1,4 +1,5 @@
-﻿using GlobalShopping.Common;
+﻿using AspNetCoreHero.ToastNotification.Abstractions;
+using GlobalShopping.Common;
 using GlobalShopping.Data;
 using GlobalShopping.Data.Entities;
 using GlobalShopping.Helpers;
@@ -16,14 +17,16 @@ namespace GlobalShopping.Controllers
         private readonly DataContext _context;
         private readonly IUserHelper _userHelper;
 		private readonly IOrdersHelper _ordersHelper;
+        private readonly IToastifyService _toastify;
 
-		public HomeController(ILogger<HomeController> logger, DataContext context, IUserHelper userHelper, IOrdersHelper ordersHelper)
+        public HomeController(ILogger<HomeController> logger, DataContext context, IUserHelper userHelper, IOrdersHelper ordersHelper, IToastifyService toastify)
         {
             _logger = logger;
             _context = context;
             _userHelper = userHelper;
 			_ordersHelper = ordersHelper;
-		}
+            this._toastify = toastify;
+        }
 
 
         public async Task<IActionResult> Index()
@@ -224,7 +227,7 @@ namespace GlobalShopping.Controllers
                 return RedirectToAction(nameof(OrderSuccess));
             }
 
-            ModelState.AddModelError(string.Empty, response.Message);
+            _toastify.Error(response.Message);
             return View(model);
         }
 
@@ -287,6 +290,7 @@ namespace GlobalShopping.Controllers
 
             _context.TemporalSales.Remove(temporalSale);
             await _context.SaveChangesAsync();
+            _toastify.Information("Registro borrado");
             return RedirectToAction(nameof(ShowCart));
         }
 
@@ -335,7 +339,7 @@ namespace GlobalShopping.Controllers
                 }
                 catch (Exception exception)
                 {
-                    ModelState.AddModelError(string.Empty, exception.Message);
+                    _toastify.Error(exception.Message);
                     return View(model);
                 }
 

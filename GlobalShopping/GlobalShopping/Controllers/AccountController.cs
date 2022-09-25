@@ -1,4 +1,5 @@
-﻿using GlobalShopping.Common;
+﻿using AspNetCoreHero.ToastNotification.Abstractions;
+using GlobalShopping.Common;
 using GlobalShopping.Data;
 using GlobalShopping.Data.Entities;
 using GlobalShopping.Enums;
@@ -18,15 +19,18 @@ namespace GlobalShopping.Controllers
         private readonly ICombosHelper _combosHelper;
         private readonly IBlobHelper _blobHelper;
 		private readonly IMailHelper _mailHelper;
+        private readonly IToastifyService _toastify;
 
-		public AccountController(IUserHelper userHelper, DataContext context, ICombosHelper combosHelper, IBlobHelper blobHelper, IMailHelper mailHelper)
+        public AccountController(IUserHelper userHelper, DataContext context, ICombosHelper combosHelper,
+            IBlobHelper blobHelper, IMailHelper mailHelper, IToastifyService toastify)
         {
             _userHelper = userHelper;
             _context = context;
             _combosHelper = combosHelper;
             _blobHelper = blobHelper;
 			_mailHelper = mailHelper;
-		}
+            _toastify = toastify;
+        }
 
         public IActionResult Login()
         {
@@ -51,15 +55,15 @@ namespace GlobalShopping.Controllers
 
                 if (result.IsLockedOut)
                 {
-                    ModelState.AddModelError(string.Empty, "Ha superado el máximo número de intentos, su cuenta está bloqueada, intente de nuevo en 5 minutos.");
+                    _toastify.Error("Ha superado el máximo número de intentos, su cuenta está bloqueada, intente de nuevo en 5 minutos.");
                 }
                 else if (result.IsNotAllowed)
                 {
-                    ModelState.AddModelError(string.Empty, "El usuario no ha sido habilitado, debes de seguir las instrucciones del correo enviado para poder habilitarte en el sistema.");
+                    _toastify.Error("El usuario no ha sido habilitado, debes de seguir las instrucciones enviadas al correo para poder habilitarlo.");
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, "Email o contraseña incorrectos.");
+                    _toastify.Error("Email o contraseña incorrectos.");
                 }
 
             }
@@ -109,7 +113,7 @@ namespace GlobalShopping.Controllers
                 User user = await _userHelper.AddUserAsync(model);
                 if (user == null)
                 {
-                    ModelState.AddModelError(string.Empty, "Este correo ya está siendo usado.");
+                    _toastify.Error("Este correo ya está siendo usado.");
                     model.Countries = await _combosHelper.GetComboCountriesAsync();
                     model.States = await _combosHelper.GetComboStatesAsync(model.CountryId);
                     model.Cities = await _combosHelper.GetComboCitiesAsync(model.StateId);
@@ -132,11 +136,11 @@ namespace GlobalShopping.Controllers
                         $"<hr/><br/><p><a href = \"{tokenLink}\">Confirmar Email</a></p>");
                 if (response.IsSuccess)
                 {
-                    ViewBag.Message = "Las instrucciones para habilitar el usuario han sido enviadas al correo.";
-                    return View(model);
+                    _toastify.Information("Usuario registrado. Para poder ingresar al sistema, siga las instrucciones que han sido enviadas a su correo.");
+                    return RedirectToAction(nameof(Login));
                 }
 
-                ModelState.AddModelError(string.Empty, response.Message);
+                _toastify.Error(response.Message);
 
             }
 
@@ -267,7 +271,7 @@ namespace GlobalShopping.Controllers
             {
                 if(model.OldPassword == model.NewPassword)
                 {
-                    ModelState.AddModelError(string.Empty, "Debes de ingresar una contraseña diferente.");
+                    _toastify.Error("Debes de ingresar una contraseña diferente.");
                     return View(model);
                 }
                     
@@ -281,12 +285,12 @@ namespace GlobalShopping.Controllers
                     }
                     else
                     {
-                        ModelState.AddModelError(string.Empty, result.Errors.FirstOrDefault().Description);
+                        _toastify.Error(result.Errors.FirstOrDefault().Description);
                     }
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, "Usuario no encontrado.");
+                    _toastify.Error("Usuario no encontrado.");
                 }
             }
 
@@ -306,7 +310,7 @@ namespace GlobalShopping.Controllers
                 User user = await _userHelper.GetUserAsync(model.Email);
                 if (user == null)
                 {
-                    ModelState.AddModelError(string.Empty, "El email no corresponde a ningún usuario registrado.");
+                    _toastify.Error("El email no corresponde a ningún usuario registrado.");
                     return View(model);
                 }
 
@@ -322,8 +326,8 @@ namespace GlobalShopping.Controllers
                     $"<h1>GlobalShopping - Recuperación de Contraseña</h1>" +
                     $"Para recuperar la contraseña haga click en el siguiente enlace:" +
                     $"<p><a href = \"{link}\">Reset Password</a></p>");
-                ViewBag.Message = "Las instrucciones para recuperar la contraseña han sido enviadas a su correo.";
-                return View();
+                _toastify.Information("Las instrucciones para recuperar la contraseña han sido enviadas a su correo.");
+                return RedirectToAction(nameof(Login));
             }
 
             return View(model);
@@ -343,15 +347,15 @@ namespace GlobalShopping.Controllers
                 IdentityResult result = await _userHelper.ResetPasswordAsync(user, model.Token, model.Password);
                 if (result.Succeeded)
                 {
-                    ViewBag.Message = "Contraseña cambiada con éxito.";
-                    return View();
+                    _toastify.Information("Contraseña cambiada con éxito.");
+                    return RedirectToAction(nameof(Login));
                 }
 
-                ViewBag.Message = "Error cambiando la contraseña.";
+                _toastify.Error("Error cambiando la contraseña.");
                 return View(model);
             }
 
-            ViewBag.Message = "Usuario no encontrado.";
+            _toastify.Error("Usuario no encontrado.");
             return View(model);
         }
 

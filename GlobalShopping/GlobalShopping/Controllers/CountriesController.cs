@@ -1,4 +1,5 @@
-﻿using GlobalShopping.Data;
+﻿using AspNetCoreHero.ToastNotification.Abstractions;
+using GlobalShopping.Data;
 using GlobalShopping.Data.Entities;
 using GlobalShopping.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -11,10 +12,12 @@ namespace GlobalShopping.Controllers
     public class CountriesController : Controller
     {
         private readonly DataContext _context;
+        private readonly IToastifyService _toastify;
 
-        public CountriesController(DataContext context)
+        public CountriesController(DataContext context, IToastifyService toastify)
         {
             _context = context;
+            this._toastify = toastify;
         }
 
         // GET: Countries
@@ -113,16 +116,16 @@ namespace GlobalShopping.Controllers
                 {
                     if (dbUpdateException.InnerException.Message.Contains("duplicate"))
                     {
-                        ModelState.AddModelError(string.Empty, "Ya existe un país con el mismo nombre.");
+                        _toastify.Error("Ya existe un país con el mismo nombre.");
                     }
                     else
                     {
-                        ModelState.AddModelError(string.Empty, dbUpdateException.InnerException.Message);
+                        _toastify.Error(dbUpdateException.InnerException.Message);
                     }
                 }
                 catch (Exception exception)
                 {
-                    ModelState.AddModelError(string.Empty, exception.Message);
+                    _toastify.Error(exception.Message);
                 }
             }
             return View(country);
@@ -174,16 +177,16 @@ namespace GlobalShopping.Controllers
                 {
                     if (dbUpdateException.InnerException.Message.Contains("duplicate"))
                     {
-                        ModelState.AddModelError(string.Empty, "Ya existe una provincia con el mismo nombre en este país.");
+                        _toastify.Error("Ya existe una provincia con el mismo nombre en este país.");
                     }
                     else
                     {
-                        ModelState.AddModelError(string.Empty, dbUpdateException.InnerException.Message);
+                        _toastify.Error(dbUpdateException.InnerException.Message);
                     }
                 }
                 catch (Exception exception)
                 {
-                    ModelState.AddModelError(string.Empty, exception.Message);
+                    _toastify.Error(exception.Message);
                 }
             }
             return View(model);
@@ -234,16 +237,16 @@ namespace GlobalShopping.Controllers
                 {
                     if (dbUpdateException.InnerException.Message.Contains("duplicate"))
                     {
-                        ModelState.AddModelError(string.Empty, "Ya existe una ciudad con el mismo nombre en esta provincia.");
+                        _toastify.Error("Ya existe una ciudad con el mismo nombre en esta provincia.");
                     }
                     else
                     {
-                        ModelState.AddModelError(string.Empty, dbUpdateException.InnerException.Message);
+                        _toastify.Error(dbUpdateException.InnerException.Message);
                     }
                 }
                 catch (Exception exception)
                 {
-                    ModelState.AddModelError(string.Empty, exception.Message);
+                    _toastify.Error(exception.Message);
                 }
             }
             return View(model);
@@ -285,22 +288,23 @@ namespace GlobalShopping.Controllers
                 {
                     _context.Update(country);
                     await _context.SaveChangesAsync();
+                    _toastify.Success("País actualizado correctamente");
                     return RedirectToAction(nameof(Index));
                 }
                 catch (DbUpdateException dbUpdateException)
                 {
                     if (dbUpdateException.InnerException.Message.Contains("duplicate"))
                     {
-                        ModelState.AddModelError(string.Empty, "Ya existe un país con el mismo nombre.");
+                        _toastify.Error("Ya existe un país con el mismo nombre.");
                     }
                     else
                     {
-                        ModelState.AddModelError(string.Empty, dbUpdateException.InnerException.Message);
+                        _toastify.Error(dbUpdateException.InnerException.Message);
                     }
                 }
                 catch (Exception exception)
                 {
-                    ModelState.AddModelError(string.Empty, exception.Message);
+                    _toastify.Error(exception.Message);
                 }
             }
             return View(country);
@@ -355,22 +359,23 @@ namespace GlobalShopping.Controllers
                     };
                     _context.Update(state);
                     await _context.SaveChangesAsync();
+                    _toastify.Success("Provincia actualizada correctamente");
                     return RedirectToAction(nameof(Details), new { Id = model.CountryId });
                 }
                 catch (DbUpdateException dbUpdateException)
                 {
                     if (dbUpdateException.InnerException.Message.Contains("duplicate"))
                     {
-                        ModelState.AddModelError(string.Empty, "Ya existe una provincia con el mismo nombre en este país.");
+                        _toastify.Error("Ya existe una provincia con el mismo nombre en este país.");
                     }
                     else
                     {
-                        ModelState.AddModelError(string.Empty, dbUpdateException.InnerException.Message);
+                        _toastify.Error(dbUpdateException.InnerException.Message);
                     }
                 }
                 catch (Exception exception)
                 {
-                    ModelState.AddModelError(string.Empty, exception.Message);
+                    _toastify.Error(exception.Message);
                 }
             }
             return View(model);
@@ -425,22 +430,23 @@ namespace GlobalShopping.Controllers
                     };
                     _context.Update(city);
                     await _context.SaveChangesAsync();
+                    _toastify.Success("Ciudad actualizada correctamente");
                     return RedirectToAction(nameof(DetailsState), new { Id = model.StateId });
                 }
                 catch (DbUpdateException dbUpdateException)
                 {
                     if (dbUpdateException.InnerException.Message.Contains("duplicate"))
                     {
-                        ModelState.AddModelError(string.Empty, "Ya existe una ciudad con el mismo nombre en esta provincia.");
+                        _toastify.Error("Ya existe una ciudad con el mismo nombre en esta provincia.");
                     }
                     else
                     {
-                        ModelState.AddModelError(string.Empty, dbUpdateException.InnerException.Message);
+                        _toastify.Error(dbUpdateException.InnerException.Message);
                     }
                 }
                 catch (Exception exception)
                 {
-                    ModelState.AddModelError(string.Empty, exception.Message);
+                    _toastify.Error(exception.Message);
                 }
             }
             return View(model);
@@ -483,8 +489,10 @@ namespace GlobalShopping.Controllers
             }
 
             await _context.SaveChangesAsync();
+            _toastify.Information("País borrado");
             return RedirectToAction(nameof(Index));
         }
+            
         #endregion
 
         #region Delete State
@@ -522,6 +530,7 @@ namespace GlobalShopping.Controllers
             }
 
             await _context.SaveChangesAsync();
+            _toastify.Information("Provincia borrada");
             return RedirectToAction(nameof(Details), new { Id = state.Country.Id });
         }
         #endregion
@@ -561,6 +570,7 @@ namespace GlobalShopping.Controllers
             }
 
             await _context.SaveChangesAsync();
+            _toastify.Information("Ciudad borrada");
             return RedirectToAction(nameof(DetailsState), new { Id = city.State.Id });
         }
         #endregion

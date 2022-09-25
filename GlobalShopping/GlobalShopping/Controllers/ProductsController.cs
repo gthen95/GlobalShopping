@@ -1,4 +1,5 @@
-﻿using GlobalShopping.Data;
+﻿using AspNetCoreHero.ToastNotification.Abstractions;
+using GlobalShopping.Data;
 using GlobalShopping.Data.Entities;
 using GlobalShopping.Helpers;
 using GlobalShopping.Models;
@@ -14,13 +15,15 @@ namespace GlobalShopping.Controllers
 		private readonly DataContext _context;
 		private readonly ICombosHelper _combosHelper;
 		private readonly IBlobHelper _blobHelper;
+        private readonly IToastifyService _toastify;
 
-		public ProductsController(DataContext context, ICombosHelper combosHelper, IBlobHelper blobHelper)
+        public ProductsController(DataContext context, ICombosHelper combosHelper, IBlobHelper blobHelper, IToastifyService toastify)
 		{
 			_context = context;
 			_combosHelper = combosHelper;
 			_blobHelper = blobHelper;
-		}
+            this._toastify = toastify;
+        }
 
 		public async Task<IActionResult> Index()
 		{
@@ -87,16 +90,16 @@ namespace GlobalShopping.Controllers
 				{
 					if (dbUpdateException.InnerException.Message.Contains("duplicate"))
 					{
-						ModelState.AddModelError(string.Empty, "Ya existe un producto con el mismo nombre.");
+						_toastify.Error("Ya existe un producto con el mismo nombre.");
 					}
 					else
 					{
-						ModelState.AddModelError(string.Empty, dbUpdateException.InnerException.Message);
+						_toastify.Error(dbUpdateException.InnerException.Message);
 					}
 				}
 				catch (Exception exception)
 				{
-					ModelState.AddModelError(string.Empty, exception.Message);
+					_toastify.Error(exception.Message);
 				}
 			}
 
@@ -154,16 +157,16 @@ namespace GlobalShopping.Controllers
 			{
 				if (dbUpdateException.InnerException.Message.Contains("duplicate"))
 				{
-					ModelState.AddModelError(string.Empty, "Ya existe un producto con el mismo nombre.");
+					_toastify.Error("Ya existe un producto con el mismo nombre.");
 				}
 				else
 				{
-					ModelState.AddModelError(string.Empty, dbUpdateException.InnerException.Message);
+					_toastify.Error(dbUpdateException.InnerException.Message);
 				}
 			}
 			catch (Exception exception)
 			{
-				ModelState.AddModelError(string.Empty, exception.Message);
+				_toastify.Error(exception.Message);
 			}
 
 			return View(model);
@@ -235,7 +238,7 @@ namespace GlobalShopping.Controllers
 				}
 				catch (Exception exception)
 				{
-					ModelState.AddModelError(string.Empty, exception.Message);
+					_toastify.Error(exception.Message);
 				}
 			}
 
@@ -260,6 +263,7 @@ namespace GlobalShopping.Controllers
 			await _blobHelper.DeleteBlobAsync(productImage.ImageId, "products");
 			_context.ProductImages.Remove(productImage);
 			await _context.SaveChangesAsync();
+			_toastify.Error("Imagen borrada");
 			return RedirectToAction(nameof(Details), new { Id = productImage.Product.Id });
 		}
 
@@ -321,7 +325,7 @@ namespace GlobalShopping.Controllers
 				}
 				catch (Exception exception)
 				{
-					ModelState.AddModelError(string.Empty, exception.Message);
+					_toastify.Error(exception.Message);
 				}
 			}
 
@@ -351,6 +355,7 @@ namespace GlobalShopping.Controllers
 
 			_context.ProductCategories.Remove(productCategory);
 			await _context.SaveChangesAsync();
+			_toastify.Information("Categoría borrada");
 			return RedirectToAction(nameof(Details), new { Id = productCategory.Product.Id });
 		}
 
@@ -391,6 +396,7 @@ namespace GlobalShopping.Controllers
 				await _blobHelper.DeleteBlobAsync(productImage.ImageId, "products");
 			}
 
+			_toastify.Error("Producto borrado");
 			return RedirectToAction(nameof(Index));
 		}
 

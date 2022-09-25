@@ -1,4 +1,5 @@
-﻿using GlobalShopping.Data;
+﻿using AspNetCoreHero.ToastNotification.Abstractions;
+using GlobalShopping.Data;
 using GlobalShopping.Data.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -10,10 +11,12 @@ namespace GlobalShopping.Controllers
     public class CategoriesController : Controller
     {
         private readonly DataContext _context;
+        private readonly IToastifyService _toastify;
 
-        public CategoriesController(DataContext context)
+        public CategoriesController(DataContext context, IToastifyService toastify)
         {
             _context = context;
+            this._toastify = toastify;
         }
 
         public async Task<IActionResult> Index()
@@ -44,16 +47,16 @@ namespace GlobalShopping.Controllers
                 {
                     if (dbUpdateException.InnerException.Message.Contains("duplicate"))
                     {
-                        ModelState.AddModelError(string.Empty, "Ya existe una categoría con el mismo nombre.");
+                        _toastify.Error("Ya existe una categoría con el mismo nombre.");
                     }
                     else
                     {
-                        ModelState.AddModelError(string.Empty, dbUpdateException.InnerException.Message);
+                        _toastify.Error(dbUpdateException.InnerException.Message);
                     }
                 }
                 catch (Exception exception)
                 {
-                    ModelState.AddModelError(string.Empty, exception.Message);
+                    _toastify.Error(exception.Message);
                 }
             }
             return View(category);
@@ -96,16 +99,16 @@ namespace GlobalShopping.Controllers
                 {
                     if (dbUpdateException.InnerException.Message.Contains("duplicate"))
                     {
-                        ModelState.AddModelError(string.Empty, "Ya existe una categoría con el mismo nombre.");
+                        _toastify.Error("Ya existe una categoría con el mismo nombre.");
                     }
                     else
                     {
-                        ModelState.AddModelError(string.Empty, dbUpdateException.InnerException.Message);
+                        _toastify.Error(dbUpdateException.InnerException.Message);
                     }
                 }
                 catch (Exception exception)
                 {
-                    ModelState.AddModelError(string.Empty, exception.Message);
+                    _toastify.Error(exception.Message);
                 }
             }
             return View(category);

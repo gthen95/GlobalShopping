@@ -1,4 +1,5 @@
-﻿using GlobalShopping.Common;
+﻿using AspNetCoreHero.ToastNotification.Abstractions;
+using GlobalShopping.Common;
 using GlobalShopping.Data;
 using GlobalShopping.Data.Entities;
 using GlobalShopping.Enums;
@@ -18,15 +19,18 @@ namespace GlobalShopping.Controllers
         private readonly ICombosHelper _combosHelper;
         private readonly IBlobHelper _blobHelper;
 		private readonly IMailHelper _mailHelper;
+        private readonly IToastifyService _toastify;
 
-		public UsersController(DataContext context, IUserHelper userHelper, ICombosHelper combosHelper, IBlobHelper blobHelper, IMailHelper mailHelper)
+        public UsersController(DataContext context, IUserHelper userHelper, ICombosHelper combosHelper, IBlobHelper blobHelper,
+            IMailHelper mailHelper, IToastifyService toastify)
         {
             _context = context;
             _userHelper = userHelper;
             _combosHelper = combosHelper;
             _blobHelper = blobHelper;
 			_mailHelper = mailHelper;
-		}
+            _toastify = toastify;
+        }
 
         public async Task<IActionResult> Index()
         {
@@ -70,7 +74,7 @@ namespace GlobalShopping.Controllers
                 User user = await _userHelper.AddUserAsync(model);
                 if (user == null)
                 {
-                    ModelState.AddModelError(string.Empty, "Este correo ya está siendo usado.");
+                    _toastify.Error("Este correo ya está siendo usado.");
                     model.Countries = await _combosHelper.GetComboCountriesAsync();
                     model.States = await _combosHelper.GetComboStatesAsync(model.CountryId);
                     model.Cities = await _combosHelper.GetComboCitiesAsync(model.StateId);
@@ -93,11 +97,11 @@ namespace GlobalShopping.Controllers
                         $"<hr/><br/><p><a href = \"{tokenLink}\">Confirmar Email</a></p>");
                 if (response.IsSuccess)
                 {
-                    ViewBag.Message = "Las instrucciones para habilitar el administrador han sido enviadas al correo.";
+                    _toastify.Success("Las instrucciones para habilitar el administrador han sido enviadas al correo.");
                     return View(model);
                 }
 
-                ModelState.AddModelError(string.Empty, response.Message);
+                _toastify.Error(response.Message);
             }
 
             model.Countries = await _combosHelper.GetComboCountriesAsync();
