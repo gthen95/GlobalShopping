@@ -1,13 +1,75 @@
-﻿@model IEnumerable<GlobalShopping.Data.Entities.Category>
+﻿
+@model IEnumerable<GlobalShopping.Data.Entities.Category>
 
 @{
-	ViewData["Title"] = "Index";
+    ViewData["Title"] = "Index";
 }
+@*
+<!-- Content Wrapper. Contains page content -->
+<div class="container-fluid">
+    <div class="card mt-2">
+        <div class="card-header text-danger">
+            <i class="fa fa-object-group"></i>  <strong>Categorías</strong>
+        </div>
+        <div class="card-body">
+            <div id="view-all">
+                @await Html.PartialAsync("_ViewAll", Model)
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--modal placeholder. Also you can place this modal form in the _Layout.cshtml-->
+<div class="modal fade in" tabindex="-1" role="dialog" data-bs-backdrop="static" id="form-modal">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-primary">
+                <h5 class="modal-title text-white"></h5>
+                <button type="button" class="btn-close text-white" data-bs-dismiss="modal" aria-label="Close">                   
+                </button>
+            </div>
+            <div class="modal-body">
+            </div>
+        </div>
+    </div>
+</div>
+
+<partial name="_DeleteDialog" />
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script src="~/js/showmodal.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#CategoriesTable').DataTable({
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
+                },
+                "aLengthMenu": [
+                    [25, 50, 100, 200, -1],
+                    [25, 50, 100, 200, "Todos"]
+                ]
+            });
+        });
+    </script>
+
+    <script>
+        sc_deleteDialog.openModal('deleteItem', true, 'btnYesDelete', '/Categories/Delete/', false);
+    </script>
+}
+*@
 
 <div class="content-wrapper">
 	<section class="content-header">
+        
 		<div class="container-fluid">
-			<div class="row mb-2">
+            <div class="card-header text-danger">
+             <h5> <i class="fa fa-object-group"></i> <strong> Categorías </strong></h5> 
+        </div>
+        
+			@*<div class="row mb-2">
 				<div class="col-sm-6">
 					<h1>Categorías</h1>
 				</div>
@@ -16,7 +78,7 @@
 						<a asp-action="Create" class="btn btn-outline-primary"> <i class="fa-solid fa-plus"></i> Crear Nuevo</a>
 					</ol>
 				</div>
-			</div>
+			</div>*@
 		</div>
 	</section>
 
@@ -29,39 +91,9 @@
 					<div class="card">
 
 						<div class="card-body">
-							<table id="MyTable" class="table table-bordered table-striped">
-								<thead>
-									<tr>
-										<th>
-											@Html.DisplayNameFor(model => model.Name)
-										</th>
-										<th></th>
-									</tr>
-								</thead>
-								<tbody>
-									@foreach (var item in Model)
-									{
-										<tr>
-											<td>
-												@Html.DisplayFor(modelItem => item.Name)
-											</td>
-											<td>
-												<a asp-action="Details" asp-route-id="@item.Id" class="btn btn-primary btn-sm"><i class="fas fa-folder"></i> Detalle </a>
-												<a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-info btn-sm"><i class="fas fa-pencil-alt"></i> Editar </a>
-												<a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i> Eliminar </a>
-											</td>
-										</tr>
-									}
-								</tbody>
-								<tfoot>
-									<tr>
-										<th>
-											@Html.DisplayNameFor(model => model.Name)
-										</th>
-										<th></th>
-									</tr>
-								</tfoot>
-							</table>
+							 <div id="view-all">
+                                @await Html.PartialAsync("_ViewAll", Model)
+                            </div>
 						</div>
 
 					</div>
@@ -75,14 +107,31 @@
 	</section>
 </div>
 
+<div class="modal fade in" tabindex="-1" role="dialog" data-bs-backdrop="static" id="form-modal">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-primary">
+                <h5 class="modal-title text-white"></h5>
+                <button type="button" class="btn-close text-white" data-bs-dismiss="modal" aria-label="Close">                   
+                </button>
+            </div>
+            <div class="modal-body">
+            </div>
+        </div>
+    </div>
+</div>
+
+<partial name="_DeleteDialog" />
+
+
 @section Scripts {
-    @{
-	await Html.RenderPartialAsync("_ValidationScriptsPartial");
-}
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script src="~/adminlte/dist/js/showmodal.js"></script>
 
 <script type="text/javascript">
 	$(document).ready(function () {
-		$('#MyTable').DataTable({
+		$('#CategoriesTable').DataTable({
 			"language": {
 				"url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
 			},
@@ -91,7 +140,11 @@
 				[10, 25, 50, 100, "Todos"]
 			],
 			 "buttons": ["copy",  "excel", "pdf", "print", "colvis"]
-		}).buttons().container().appendTo('#MyTable_wrapper .col-md-6:eq(0)');
+		}).buttons().container().appendTo('#CategoriesTable_wrapper .col-md-6:eq(0)');
 	});
 </script>
+
+ <script>
+        sc_deleteDialog.openModal('deleteItem', true, 'btnYesDelete', '/Categories/Delete/', false);
+ </script>
 }

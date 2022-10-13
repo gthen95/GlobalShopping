@@ -1,0 +1,51 @@
+﻿
+@model IEnumerable<GlobalShopping.Data.Entities.Category>
+
+<table id="CategoriesTable" class="table table-bordered table-striped">
+								<thead>
+									<tr>
+										<th>
+											@Html.DisplayNameFor(model => model.Name)
+										</th>
+										<th>
+											@Html.DisplayNameFor(model => model.ProductsNumber)
+										</th>
+
+										<th>
+											<a onclick="showInPopup('@Url.Action("AddOrEdit", "Categories", new { id = 0 }, Context.Request.Scheme)' , 'Nueva Categoría')" class="btn btn-sm btn-primary text-white"><i class="fas fa-plus-circle"></i> Categoría</a>
+										</th>
+									</tr>
+								</thead>
+								<tbody>
+									@foreach (var item in Model)
+									{
+										<tr>
+											<td>
+												@Html.DisplayFor(modelItem => item.Name)
+											</td>
+											<td>
+												@Html.DisplayFor(modelItem => item.ProductsNumber)
+											</td>
+											<td>
+												<a asp-action="Details" asp-route-id="@item.Id" class="btn btn-primary btn-sm"><i class="fas fa-folder"></i> </a>
+												<a onclick="showInPopup('@Url.Action("AddOrEdit", "Categories", new { id=item.Id }, Context.Request.Scheme)' , 'Actualizar Categoría')" class="btn btn-sm btn-warning"><i class="fas fa-pencil-alt"></i> </a>
+												<button data-id="@item.Id" class="btn btn-sm btn-danger deleteItem" data-bs-toggle="modal" data-bs-target="#deleteDialog"><i class="fas fa-trash"></i></button>
+											</td>
+										</tr>
+									}
+								</tbody>
+								<tfoot>
+									<tr>
+										<th>
+											@Html.DisplayNameFor(model => model.Name)
+										</th>
+										<th>
+											@Html.DisplayNameFor(model => model.ProductsNumber)
+										</th>
+
+										<th>
+											<a onclick="showInPopup('@Url.Action("AddOrEdit", "Categories", new { id = 0 }, Context.Request.Scheme)' , 'Nueva Categoría')" class="btn btn-sm btn-primary text-white"><i class="fas fa-plus-circle"></i> Categoría</a>
+										</th>
+									</tr>
+								</tfoot>
+							</table>
